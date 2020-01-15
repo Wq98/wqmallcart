@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wq.mapper.UserMapper">
+    <select id="checkUserPhone" parameterType="string" resultType="int">
+        select count(user_phone) from user_info where user_phone=#{userPhone};
+    </select>
+    <insert id="saveUser" parameterType="User">
+         insert into user_info(
+         user_id,
+         user_phone,
+         password,
+         user_birth,
+         nickname,
+         register_time,
+         user_state,
+         token) values(
+         #{userId},
+         #{userPhone},
+         #{password},
+         null,null,
+         #{registerTime},null,null )
+    </insert>
+    <select id="queryExist" parameterType="User" resultType="User">
+        select * from user_info
+        where user_phone=#{userPhone} and password=#{password};
+    </select>
+    <select id="queryUserInfo" parameterType="string" resultType="User">
+        select * from user_info
+        where user_id=#{userId};
+    </select>
+    <select id="queryUserById" parameterType="string" resultType="User">
+        select * from user_info
+        where user_id=#{userId};
+    </select>
+    <select id="queryUserPhone" parameterType="string" resultType="User">
+        select * from user_info
+        where user_phone=#{userPhone};
+    </select>
+
+    <select id="queryExistStateNot1" parameterType="User" resultType="User">
+        select * from user_info
+        where user_phone=#{userPhone} and password=#{password} and user_state!=1;
+    </select>
+   <insert id="insertLogin" parameterType="LoginInfo">
+       insert into login_info(
+       login_id,
+       user_phone,
+       login_flag,
+       error_num,
+       login_time
+       )values(
+       #{loginId},
+       #{userPhone},
+       #{loginFlag},#{errorNum},
+       #{loginTime}
+       )
+   </insert>
+    <select id="countError" parameterType="string" resultType="int">
+        SELECT count(user_phone) FROM login_info WHERE login_time > DATE_SUB(NOW(), INTERVAL 24 HOUR)
+        and user_phone=#{userPhone} and login_flag=1;
+    </select>
+    <update id="updateUserState" parameterType="string">
+        update user_info
+        set user_state=1
+        where user_phone=#{userPhone}
+    </update>
+    <update id="updateUserState1" parameterType="string">
+        update user_info
+        set user_state=2
+        where user_phone=#{userPhone}
+    </update>
+</mapper>
+
+
+
+
+
+
+
+

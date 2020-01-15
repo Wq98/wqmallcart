@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wq.mapper.CartMapper">
+    <insert id="saveOne" parameterType="CartInfo">
+       insert into cart_info(
+       cart_id,
+       user_phone,
+       product_id,
+       product_image,
+       product_name,
+       product_price,
+       request_num,
+       create_time,
+       modify_time
+       )values(
+       #{cartId},
+       #{userPhone},
+       #{productId},
+       #{productImage},
+       #{productName},
+       #{productPrice},
+       #{requestNum},
+       #{createTime},
+       null
+       )
+    </insert>
+   <select id="queryCartList" parameterType="string" resultType="CartInfo">
+      select * from cart_info
+      where user_phone=#{userPhone}
+   </select>
+   <delete id="removeCartProduct" parameterType="string">
+      delete from cart_info
+      where cart_id=#{cartId}
+   </delete>
+   <delete id="removeProductList">
+      delete from cart_info
+      where cart_id in
+      <foreach collection="array" item="cartIds" open="(" separator="," close=")">
+         #{cartIds}
+      </foreach>
+   </delete>
+   <select id="checkProductExist" parameterType="string" resultType="Integer">
+      select count(1) from cart_info
+      where product_id=#{productId} and user_phone=#{userPhone}
+   </select>
+   <update id="updateProductNum">
+      update cart_info set request_num=request_num+#{requestNum}
+      where product_id=#{productId} and user_phone=#{userPhone}
+   </update>
+   <select id="queryCartExist" parameterType="string" resultType="CartInfo">
+      select * from cart_info
+      where user_phone=#{userPhone} and product_id=#{productId}
+   </select>
+   <select id="queryProductById" resultType="ProductInfo">
+        select * from product_info
+        where product_id=#{productId};
+    </select>
+</mapper>

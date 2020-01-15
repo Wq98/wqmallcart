@@ -1,0 +1,37 @@
+server:
+  port: 9001
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: user-service
+          uri: lb://user
+          predicates:
+            - Path=/user/**
+            - Method=GET,POST
+        - id: product-service
+          uri: lb://product
+          predicates:
+            - Path=/product/**
+            - Method=GET,POST
+        - id: cart-service
+          uri: lb://cart
+          predicates:
+            - Path=/cart/**
+            - Method=GET,POST
+        - id: search-service
+          uri: lb://search
+          predicates:
+            - Path=/search/**
+            - Method=GET,POST
+          filters:
+            - StripPrefix=1
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
