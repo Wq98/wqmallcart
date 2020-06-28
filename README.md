@@ -6,5 +6,5 @@ common---实体类和一些公用配置类<br>
 gateway----网关，jwt工具类以及路由过滤<br>
 product----商品操作<br>
 redis---redis配置封装类<br>
-search---搜素，es/solr(不全，都只实现了搜索)<br>
+search---搜索，es/solr(不全，都只实现了搜索)<br>
 user---用户操作<br>
